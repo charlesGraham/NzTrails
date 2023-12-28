@@ -1,4 +1,3 @@
-using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
@@ -86,6 +85,58 @@ namespace NzTrails.Api.Controllers
             };
 
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+        }
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult UpdateRegion(Guid id, UpdateRegionRequestDto updatedRegion)
+        {
+            var regionDomainModel = _nzWalksDbContext.Regions.FirstOrDefault(x => x.Id == id);
+
+            if (regionDomainModel is null)
+                return NotFound();
+
+            // DTO to domain model
+            regionDomainModel.Code = updatedRegion.Code;
+            regionDomainModel.Name = updatedRegion.Name;
+            regionDomainModel.RegionImageUrl = updatedRegion.RegionImageUrl;
+
+            _nzWalksDbContext.SaveChanges();
+
+            // domain model to DTO
+            var regionDto = new RegionDto()
+            {
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,
+                Name = regionDomainModel.Name,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            return Ok(regionDto);
+        }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult DeleteRegion(Guid id)
+        {
+            var region = _nzWalksDbContext.Regions.FirstOrDefault(x => x.Id == id);
+
+            if (region is null)
+                return NotFound();
+
+            _nzWalksDbContext.Regions.Remove(region);
+            _nzWalksDbContext.SaveChanges();
+
+            // domain to DTO
+            var regionDto = new RegionDto()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImageUrl = region.RegionImageUrl
+            };
+
+            return Ok(regionDto);
         }
     }
 }
