@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;

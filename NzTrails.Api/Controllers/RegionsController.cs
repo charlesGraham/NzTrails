@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
 using NzTrails.Api.Models.DTO;
