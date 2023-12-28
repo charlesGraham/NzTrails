@@ -60,5 +60,32 @@ namespace NzTrails.Api.Controllers
 
             return Ok(regionDto);
         }
+
+        [HttpPost]
+        public IActionResult AddRegion(RegionRequestDto newRegion)
+        {
+            //convert request dto to domain model
+            var regionDomainModel = new Region()
+            {
+                Code = newRegion.Code,
+                Name = newRegion.Name,
+                RegionImageUrl = newRegion.RegionImageUrl
+            };
+
+            // update db
+            _nzWalksDbContext.Regions.Add(regionDomainModel);
+            _nzWalksDbContext.SaveChanges();
+
+            // domain model to DTO
+            var regionDto = new RegionDto()
+            {
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,
+                Name = regionDomainModel.Name,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+        }
     }
 }
