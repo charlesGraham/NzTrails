@@ -1,0 +1,14 @@
+using AutoMapper;
+using NzTrails.Api.Models.Domain;
+using NzTrails.Api.Models.DTO;
+
+namespace NzTrails.Api.Mappings
+{
+    public class AutomapperProfiles : Profile
+    {
+        public AutomapperProfiles()
+        {
+            CreateMap<Region, RegionDto>().ReverseMap();
+        }
+    }
+}

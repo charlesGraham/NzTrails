@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
+using NzTrails.Api.Mappings;
 using NzTrails.Api.Repositories.Implementation;
 using NzTrails.Api.Repositories.Interfaces;
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<NzWalksDbContext>(options =>
 });
 
 builder.Services.AddScoped<IRegionRepo, RegionRepo>();
+
+builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
 
 var app = builder.Build();
 

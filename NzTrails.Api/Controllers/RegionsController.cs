@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
@@ -12,11 +13,17 @@ namespace NzTrails.Api.Controllers
     {
         private readonly NzWalksDbContext _nzWalksDbContext;
         private readonly IRegionRepo _regionRepo;
+        private readonly IMapper _mapper;
 
-        public RegionsController(NzWalksDbContext nzWalksDbContext, IRegionRepo regionRepo)
+        public RegionsController(
+            NzWalksDbContext nzWalksDbContext,
+            IRegionRepo regionRepo,
+            IMapper mapper
+        )
         {
             this._nzWalksDbContext = nzWalksDbContext;
             this._regionRepo = regionRepo;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -26,19 +33,22 @@ namespace NzTrails.Api.Controllers
             var regions = await _regionRepo.GetAllAsync();
 
             // domain model to DTO
-            var regionsDto = new List<RegionDto>();
-            foreach (var region in regions)
-            {
-                regionsDto.Add(
-                    new RegionDto()
-                    {
-                        Id = region.Id,
-                        Name = region.Name,
-                        Code = region.Code,
-                        RegionImageUrl = region.RegionImageUrl
-                    }
-                );
-            }
+            // var regionsDto = new List<RegionDto>();
+            // foreach (var region in regions)
+            // {
+            //     regionsDto.Add(
+            //         new RegionDto()
+            //         {
+            //             Id = region.Id,
+            //             Name = region.Name,
+            //             Code = region.Code,
+            //             RegionImageUrl = region.RegionImageUrl
+            //         }
+            //     );
+            // }
+
+            // domain to dto
+            var regionsDto = _mapper.Map<List<RegionDto>>(regions);
 
             return Ok(regionsDto);
         }
