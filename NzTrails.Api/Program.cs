@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
+using NzTrails.Api.Repositories.Implementation;
+using NzTrails.Api.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<NzWalksDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksConnectionString"));
 });
+
+builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 
 var app = builder.Build();
 
