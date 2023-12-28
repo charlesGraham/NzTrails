@@ -1,6 +1,8 @@
+using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
+using NzTrails.Api.Models.DTO;
 
 namespace NzTrails.Api.Controllers
 {
@@ -18,8 +20,25 @@ namespace NzTrails.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            // get from db
             var regions = _nzWalksDbContext.Regions.ToList();
-            return Ok(regions);
+
+            // domain model to DTO
+            var regionsDto = new List<RegionDto>();
+            foreach (var region in regions)
+            {
+                regionsDto.Add(
+                    new RegionDto()
+                    {
+                        Id = region.Id,
+                        Name = region.Name,
+                        Code = region.Code,
+                        RegionImageUrl = region.RegionImageUrl
+                    }
+                );
+            }
+
+            return Ok(regionsDto);
         }
 
         [HttpGet]
@@ -29,11 +48,17 @@ namespace NzTrails.Api.Controllers
             var region = _nzWalksDbContext.Regions.Find(id);
 
             if (region is null)
-            {
                 return NotFound();
-            }
 
-            return Ok(region);
+            var regionDto = new RegionDto()
+            {
+                Id = region.Id,
+                Name = region.Name,
+                Code = region.Code,
+                RegionImageUrl = region.RegionImageUrl
+            };
+
+            return Ok(regionDto);
         }
     }
 }
