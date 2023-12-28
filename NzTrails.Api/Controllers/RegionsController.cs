@@ -21,5 +21,19 @@ namespace NzTrails.Api.Controllers
             var regions = _nzWalksDbContext.Regions.ToList();
             return Ok(regions);
         }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult GetRegionById(Guid id)
+        {
+            var region = _nzWalksDbContext.Regions.Find(id);
+
+            if (region is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(region);
+        }
     }
 }
