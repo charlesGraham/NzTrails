@@ -32,21 +32,6 @@ namespace NzTrails.Api.Controllers
             // get from db
             var regions = await _regionRepo.GetAllAsync();
 
-            // domain model to DTO
-            // var regionsDto = new List<RegionDto>();
-            // foreach (var region in regions)
-            // {
-            //     regionsDto.Add(
-            //         new RegionDto()
-            //         {
-            //             Id = region.Id,
-            //             Name = region.Name,
-            //             Code = region.Code,
-            //             RegionImageUrl = region.RegionImageUrl
-            //         }
-            //     );
-            // }
-
             // domain to dto
             var regionsDto = _mapper.Map<List<RegionDto>>(regions);
 
@@ -62,13 +47,8 @@ namespace NzTrails.Api.Controllers
             if (region is null)
                 return NotFound();
 
-            var regionDto = new RegionDto()
-            {
-                Id = region.Id,
-                Name = region.Name,
-                Code = region.Code,
-                RegionImageUrl = region.RegionImageUrl
-            };
+            // domain to DTO
+            var regionDto = _mapper.Map<RegionDto>(region);
 
             return Ok(regionDto);
         }
@@ -76,26 +56,15 @@ namespace NzTrails.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegion(RegionRequestDto newRegion)
         {
-            //convert request dto to domain model
-            var regionDomainModel = new Region()
-            {
-                Code = newRegion.Code,
-                Name = newRegion.Name,
-                RegionImageUrl = newRegion.RegionImageUrl
-            };
+            // dto to domain model
+            var regionDomainModel = _mapper.Map<Region>(newRegion);
 
             // update db
             await _regionRepo.AddAsync(regionDomainModel);
             await _nzWalksDbContext.SaveChangesAsync();
 
             // domain model to DTO
-            var regionDto = new RegionDto()
-            {
-                Id = regionDomainModel.Id,
-                Code = regionDomainModel.Code,
-                Name = regionDomainModel.Name,
-                RegionImageUrl = regionDomainModel.RegionImageUrl
-            };
+            var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
 
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
         }
@@ -105,12 +74,7 @@ namespace NzTrails.Api.Controllers
         public async Task<IActionResult> UpdateRegion(Guid id, UpdateAsyncRequestDto updatedRegion)
         {
             // DTO to domain model
-            var update = new Region
-            {
-                Code = updatedRegion.Code,
-                Name = updatedRegion.Name,
-                RegionImageUrl = updatedRegion.RegionImageUrl
-            };
+            var update = _mapper.Map<Region>(updatedRegion);
 
             update = await _regionRepo.UpdateAsync(id, update);
 
@@ -118,13 +82,7 @@ namespace NzTrails.Api.Controllers
                 return NotFound();
 
             // domain model to DTO
-            var regionDto = new RegionDto()
-            {
-                Id = update.Id,
-                Code = update.Code,
-                Name = update.Name,
-                RegionImageUrl = update.RegionImageUrl
-            };
+            var regionDto = _mapper.Map<RegionDto>(update);
 
             return Ok(regionDto);
         }
@@ -138,14 +96,8 @@ namespace NzTrails.Api.Controllers
             if (region is null)
                 return NotFound();
 
-            // domain to DTO
-            var regionDto = new RegionDto()
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Name = region.Name,
-                RegionImageUrl = region.RegionImageUrl
-            };
+            // domain to DT
+            var regionDto = _mapper.Map<RegionDto>(region);
 
             return Ok(regionDto);
         }

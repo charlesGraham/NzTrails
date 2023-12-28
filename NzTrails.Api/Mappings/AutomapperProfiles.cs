@@ -9,6 +9,8 @@ namespace NzTrails.Api.Mappings
         public AutomapperProfiles()
         {
             CreateMap<Region, RegionDto>().ReverseMap();
+            CreateMap<RegionRequestDto, Region>().ReverseMap();
+            CreateMap<UpdateAsyncRequestDto, Region>().ReverseMap();
         }
     }
 }
