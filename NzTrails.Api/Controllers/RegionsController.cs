@@ -56,17 +56,24 @@ namespace NzTrails.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegion(RegionRequestDto newRegion)
         {
-            // dto to domain model
-            var regionDomainModel = _mapper.Map<Region>(newRegion);
+            if (ModelState.IsValid)
+            {
+                // dto to domain model
+                var regionDomainModel = _mapper.Map<Region>(newRegion);
 
-            // update db
-            await _regionRepo.AddAsync(regionDomainModel);
-            await _nzWalksDbContext.SaveChangesAsync();
+                // update db
+                await _regionRepo.AddAsync(regionDomainModel);
+                await _nzWalksDbContext.SaveChangesAsync();
 
-            // domain model to DTO
-            var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
+                // domain model to DTO
+                var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
 
-            return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+                return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPut]
