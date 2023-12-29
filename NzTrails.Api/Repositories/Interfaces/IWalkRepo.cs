@@ -6,5 +6,6 @@ namespace NzTrails.Api.Repositories.Interfaces
     {
         Task<Walk> AddAsync(Walk newWalk);
         Task<List<Walk>> GetAllAsync();
+        Task<Walk?> GetByIdAsync(Guid id);
     }
 }

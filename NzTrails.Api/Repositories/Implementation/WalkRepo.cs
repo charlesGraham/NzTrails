@@ -23,7 +23,12 @@ namespace NzTrails.Api.Repositories.Implementation
 
         public async Task<List<Walk>> GetAllAsync()
         {
-            return await _dbContext.Walks.ToListAsync();
+            return await _dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+        }
+
+        public async Task<Walk?> GetByIdAsync(Guid id)
+        {
+            return await _dbContext.Walks.FindAsync(id);
         }
     }
 }
