@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NzTrails.Api.CustomActionFilters;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
 using NzTrails.Api.Models.DTO;
@@ -54,26 +55,20 @@ namespace NzTrails.Api.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> AddRegion(RegionRequestDto newRegion)
         {
-            if (ModelState.IsValid)
-            {
-                // dto to domain model
-                var regionDomainModel = _mapper.Map<Region>(newRegion);
+            // dto to domain model
+            var regionDomainModel = _mapper.Map<Region>(newRegion);
 
-                // update db
-                await _regionRepo.AddAsync(regionDomainModel);
-                await _nzWalksDbContext.SaveChangesAsync();
+            // update db
+            await _regionRepo.AddAsync(regionDomainModel);
+            await _nzWalksDbContext.SaveChangesAsync();
 
-                // domain model to DTO
-                var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
+            // domain model to DTO
+            var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
 
-                return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+            return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
         }
 
         [HttpPut]
