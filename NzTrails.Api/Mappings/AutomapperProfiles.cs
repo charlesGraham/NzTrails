@@ -11,6 +11,9 @@ namespace NzTrails.Api.Mappings
             CreateMap<Region, RegionDto>().ReverseMap();
             CreateMap<RegionRequestDto, Region>().ReverseMap();
             CreateMap<UpdateAsyncRequestDto, Region>().ReverseMap();
+            CreateMap<Walk, AddWalkRequestDto>().ReverseMap();
+            CreateMap<AddWalkRequestDto, Walk>().ReverseMap();
+            CreateMap<Walk, WalkDto>().ReverseMap();
         }
     }
 }
