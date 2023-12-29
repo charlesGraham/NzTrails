@@ -58,5 +58,16 @@ namespace NzTrails.Api.Controllers
 
             return Ok(_mapper.Map<WalkDto>(update)); // domain to DTO
         }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteWalk(Guid id)
+        {
+            var walk = await _walkRepo.DeleteAsync(id);
+            if (walk is null)
+                return NotFound();
+
+            return Ok(_mapper.Map<WalkDto>(walk));
+        }
     }
 }
