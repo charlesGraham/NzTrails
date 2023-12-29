@@ -33,14 +33,18 @@ namespace NzTrails.Api.Controllers
             [FromQuery] string? filterOn,
             [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy,
-            [FromQuery] bool? isAscending
+            [FromQuery] bool? isAscending,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 1000
         )
         {
             var walks = await _walkRepo.GetAllAsync(
                 filterOn,
                 filterQuery,
                 sortBy,
-                isAscending ?? true
+                isAscending ?? true,
+                pageNumber,
+                pageSize
             );
             return Ok(_mapper.Map<List<WalkDto>>(walks)); // domain to DTO
         }

@@ -1,5 +1,4 @@
 using NzTrails.Api.Models.Domain;
-using NzTrails.Api.Models.DTO;
 
 namespace NzTrails.Api.Repositories.Interfaces
 {
@@ -10,7 +9,9 @@ namespace NzTrails.Api.Repositories.Interfaces
             string? filterOn = null,
             string? filterQuery = null,
             string? sortBy = null,
-            bool isAscending = true
+            bool isAscending = true,
+            int pageNumber = 1,
+            int pageSize = 1000
         );
         Task<Walk?> GetByIdAsync(Guid id);
         Task<Walk?> UpdateAsync(Guid id, Walk updatedWalk);

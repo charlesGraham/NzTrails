@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
-using NzTrails.Api.Models.DTO;
 using NzTrails.Api.Repositories.Interfaces;
 
 namespace NzTrails.Api.Repositories.Implementation
@@ -38,7 +37,9 @@ namespace NzTrails.Api.Repositories.Implementation
             string? filterOn = null,
             string? filterQuery = null,
             string? sortBy = null,
-            bool isAscending = true
+            bool isAscending = true,
+            int pageNumber = 1,
+            int pageSize = 1000
         )
         {
             var walks = _dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
@@ -72,7 +73,10 @@ namespace NzTrails.Api.Repositories.Implementation
                 }
             }
 
-            return await walks.ToListAsync();
+            // pagination
+            var skipResults = (pageNumber - 1) * pageSize; // super cool secret pagination formula
+
+            return await walks.Skip(skipResults).Take(pageSize).ToListAsync();
 
             // return await _dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         }
