@@ -10,6 +10,7 @@ namespace NzTrails.Api.Models.DTO
         public string Code { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(100, ErrorMessage = "Maximum length for Name is 100 characters.")]
         public string Name { get; set; } = string.Empty;
         public string? RegionImageUrl { get; set; } = string.Empty;
     }
