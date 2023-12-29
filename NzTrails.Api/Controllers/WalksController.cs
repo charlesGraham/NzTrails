@@ -31,10 +31,17 @@ namespace NzTrails.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllWalks(
             [FromQuery] string? filterOn,
-            [FromQuery] string? filterQuery
+            [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool? isAscending
         )
         {
-            var walks = await _walkRepo.GetAllAsync(filterOn, filterQuery);
+            var walks = await _walkRepo.GetAllAsync(
+                filterOn,
+                filterQuery,
+                sortBy,
+                isAscending ?? true
+            );
             return Ok(_mapper.Map<List<WalkDto>>(walks)); // domain to DTO
         }
 
