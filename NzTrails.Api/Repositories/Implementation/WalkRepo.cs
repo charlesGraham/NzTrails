@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using NzTrails.Api.Data;
 using NzTrails.Api.Models.Domain;
 using NzTrails.Api.Repositories.Interfaces;
@@ -18,6 +19,11 @@ namespace NzTrails.Api.Repositories.Implementation
             await _dbContext.Walks.AddAsync(newWalk);
             await _dbContext.SaveChangesAsync();
             return newWalk;
+        }
+
+        public async Task<List<Walk>> GetAllAsync()
+        {
+            return await _dbContext.Walks.ToListAsync();
         }
     }
 }

@@ -22,15 +22,17 @@ namespace NzTrails.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalk(AddWalkRequestDto newWalk)
         {
-            // DTO to domain
-            var walk = _mapper.Map<Walk>(newWalk);
-
+            var walk = _mapper.Map<Walk>(newWalk); // DTO to domain
             await _walkRepo.AddAsync(walk);
 
-            // domain to DTO
-            var walkDto = _mapper.Map<WalkDto>(walk);
+            return Ok(_mapper.Map<WalkDto>(walk)); // domain to DTO
+        }
 
-            return Ok(walkDto);
+        [HttpGet]
+        public async Task<IActionResult> GetAllWalks()
+        {
+            var walks = await _walkRepo.GetAllAsync();
+            return Ok(_mapper.Map<List<WalkDto>>(walks)); // domain to DTO
         }
     }
 }
