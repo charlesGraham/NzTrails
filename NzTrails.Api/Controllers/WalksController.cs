@@ -37,13 +37,26 @@ namespace NzTrails.Api.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetWalkById(Guid id)
         {
             var walk = await _walkRepo.GetByIdAsync(id); // is domain model
             if (walk is null)
                 return NotFound();
 
             return Ok(_mapper.Map<WalkDto>(walk));
+        }
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateWalk(Guid id, UpdateWalkRequestDto updatedWalk)
+        {
+            var update = _mapper.Map<Walk>(updatedWalk); // DTO to domain
+
+            update = await _walkRepo.UpdateAsync(id, update);
+            if (update is null)
+                return NotFound();
+
+            return Ok(_mapper.Map<WalkDto>(update)); // domain to DTO
         }
     }
 }
