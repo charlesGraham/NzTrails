@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.CustomActionFilters;
 using NzTrails.Api.Data;
@@ -9,6 +10,7 @@ using NzTrails.Api.Repositories.Interfaces;
 namespace NzTrails.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class RegionsController : ControllerBase
     {
