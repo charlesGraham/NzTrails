@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NzTrails.Api.Data;
@@ -32,6 +33,24 @@ builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 builder.Services.AddScoped<IWalkRepo, WalkRepo>();
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
+
+builder
+    .Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NzWalks")
+    .AddEntityFrameworkStores<NzWalksAuthDbContext>()
+    .AddDefaultTokenProviders();
+
+// configure password constraints
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
 
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
