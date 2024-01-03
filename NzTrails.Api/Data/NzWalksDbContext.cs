@@ -5,7 +5,7 @@ namespace NzTrails.Api.Data
 {
     public class NzWalksDbContext : DbContext
     {
-        public NzWalksDbContext(DbContextOptions options)
+        public NzWalksDbContext(DbContextOptions<NzWalksDbContext> options)
             : base(options) { }
 
         public DbSet<Difficulty> Difficulties { get; set; }

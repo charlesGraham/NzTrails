@@ -23,6 +23,11 @@ builder.Services.AddDbContext<NzWalksDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksConnectionString"));
 });
 
+builder.Services.AddDbContext<NzWalksAuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NzTrailsAuthConnectionString"));
+});
+
 builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 builder.Services.AddScoped<IWalkRepo, WalkRepo>();
 
