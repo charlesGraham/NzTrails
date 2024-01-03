@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NzTrails.Api.Models.DTO
 {
-    public class RegisterRequestDto
+    public class LoginRequestDto
     {
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -11,6 +11,5 @@ namespace NzTrails.Api.Models.DTO
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
-        public string[] Roles { get; set; }
     }
 }

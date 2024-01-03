@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.Models.DTO;
@@ -53,6 +49,28 @@ namespace NzTrails.Api.Controllers
             }
 
             return BadRequest("Something went wrong, please try again.");
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login(LoginRequestDto loginRequest)
+        {
+            // find user
+            var user = await _userManager.FindByEmailAsync(loginRequest.Username);
+
+            if (user is not null)
+            {
+                var result = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+
+                if (result)
+                {
+                    // create token
+
+                    return Ok();
+                }
+            }
+
+            return BadRequest("Username or password is incorrect");
         }
     }
 }
