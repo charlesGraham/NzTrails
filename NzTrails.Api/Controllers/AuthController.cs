@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NzTrails.Api.Models.DTO;
+using NzTrails.Api.Repositories.Interfaces;
 
 namespace NzTrails.Api.Controllers
 {
@@ -9,10 +10,12 @@ namespace NzTrails.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepo _tokenRepo;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepo tokenRepo)
         {
-            this._userManager = userManager;
+            _tokenRepo = tokenRepo;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -64,10 +67,18 @@ namespace NzTrails.Api.Controllers
 
                 if (result)
                 {
-                    // create token
+                    // get user roles
+                    var userRoles = await _userManager.GetRolesAsync(user);
 
+                    if (userRoles is not null)
+                    {
+                        // create token
+                        var jwtToken = _tokenRepo.CreateJwtToken(user, userRoles.ToList());
 
-                    return Ok();
+                        var response = new LoginResponseDto { JwtToken = jwtToken };
+
+                        return Ok(response);
+                    }
                 }
             }
 

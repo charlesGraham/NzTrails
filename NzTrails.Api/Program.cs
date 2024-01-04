@@ -31,6 +31,7 @@ builder.Services.AddDbContext<NzWalksAuthDbContext>(options =>
 
 builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 builder.Services.AddScoped<IWalkRepo, WalkRepo>();
+builder.Services.AddScoped<ITokenRepo, TokenRepo>();
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfiles));
 
